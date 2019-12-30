@@ -73,7 +73,6 @@ public class Cube extends EmbeddedActivityClient {
     public void onDestroy() {
         super.onDestroy();
         n.nativeOnDestroy(n.instance);
-        // can this be done in onStop ?
         n.nativeDeleteInstance(n.instance);
     }
 }
