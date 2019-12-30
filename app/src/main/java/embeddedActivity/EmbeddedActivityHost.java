@@ -41,8 +41,8 @@ public class EmbeddedActivityHost extends AppCompatActivity {
      *
      * <p></p>
      *
-     *             embeddedActivity_addAndBuildClient(YourContainer, YourClient);
-     *             embeddedActivity_addAndBuildClient(YourOtherContainer, YourOtherClient);
+     *             <p> embeddedActivity_addAndBuildClient(YourContainer, YourClient);           </p>
+     *             <p> embeddedActivity_addAndBuildClient(YourOtherContainer, YourOtherClient); </p>
      *
      * <p></p>
      *
@@ -50,16 +50,18 @@ public class EmbeddedActivityHost extends AppCompatActivity {
      *
      * <p></p>
      *
-     *             embeddedActivity_addClient(R.id.fragment_containerA, new Cube());
-     *             embeddedActivity_addClient(R.id.fragment_containerB, new Cube());
-     *             embeddedActivity_buildClients();
+     *             <p> embeddedActivity_addClient(R.id.fragment_containerA, new Cube());        </p>
+     *             <p> embeddedActivity_addClient(R.id.fragment_containerB, new Cube());        </p>
+     *             <p> embeddedActivity_buildClients();                                         </p>
      *
      * @param hostContainerViewById setContentView must be invoked with a XML LAYOUT container that
      *                             contains this id, runtime created containers ARE NOT SUPPORTED
      * <p></p>
      * @param client the activity to invoke, this must extend the EmbeddedActivityClient class
      */
-    public void embeddedActivity_addAndBuildClient(final int hostContainerViewById, final EmbeddedActivityClient client) {
+    public void embeddedActivity_addAndBuildClient(
+            final int hostContainerViewById, final EmbeddedActivityClient client
+    ) {
         log.logMethodName();
         embeddedActivity_addClient(hostContainerViewById, client);
         embeddedActivity_buildClients();
@@ -79,7 +81,9 @@ public class EmbeddedActivityHost extends AppCompatActivity {
      * @param client the activity to invoke, this must extend the EmbeddedActivityClient class
      * @see #embeddedActivity_addAndBuildClient
      */
-    public void embeddedActivity_addClient(final int hostContainerViewById, final EmbeddedActivityClient client) {
+    public void embeddedActivity_addClient(
+            final int hostContainerViewById, final EmbeddedActivityClient client
+    ) {
         log.logMethodName();
         cacheFragmentTransactionIfNotCached();
         fragmentTransaction.add(hostContainerViewById, client);
@@ -106,7 +110,32 @@ public class EmbeddedActivityHost extends AppCompatActivity {
         return log.errorIfNull(supportFragmentManager.findFragmentById(hostContainerViewById));
     }
 
-    // TODO: test for fragmentById instanceof EmbeddedActivityClient failure
+    /**
+     *
+     * finds a client that has been added via
+     * {@link #embeddedActivity_addAndBuildClient(int, EmbeddedActivityClient)} or
+     * one or more of {@link #embeddedActivity_addClient(int, EmbeddedActivityClient)}
+     * followed by {@link #embeddedActivity_buildClients()}
+     *
+     * <p></p>
+     *
+     * for example:
+     *
+     * <p></p>
+     *
+     *             <p> embeddedActivity_addClient(R.id.fragment_containerA, new Cube());        </p>
+     *             <p> embeddedActivity_addClient(R.id.fragment_containerB, new Cube());        </p>
+     *             <p> embeddedActivity_buildClients();                                         </p>
+     *             <p> // Cube extends {@link EmbeddedActivityClient}                           </p>
+     *             <p> Cube x = embeddedActivity_findClientById(R.id.fragment_containerB);      </p>
+     *             <p> // can now control Cube's instance from your host                        </p>
+     *             <p> // call Cube.shutdown() as an example                                    </p>
+     *             <p> x.shutdown();                                                            </p>
+     *
+     * @param hostContainerViewById setContentView must be invoked with a XML LAYOUT container that
+     *                             contains this id, runtime created containers ARE NOT SUPPORTED
+     * @return
+     */
     public EmbeddedActivityClient embeddedActivity_findClientById(final int hostContainerViewById) {
         log.logMethodName();
         Fragment fragmentById = embeddedActivity_findFragmentById(hostContainerViewById);
