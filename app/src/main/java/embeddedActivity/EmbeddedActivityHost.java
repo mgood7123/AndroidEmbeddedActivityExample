@@ -50,8 +50,8 @@ public class EmbeddedActivityHost extends AppCompatActivity {
      *
      * <p></p>
      *
-     *             <p> embeddedActivity_addClient(R.id.fragment_containerA, new Cube());        </p>
-     *             <p> embeddedActivity_addClient(R.id.fragment_containerB, new Cube());        </p>
+     *             <p> embeddedActivity_addClient(YourContainer, YourClient);                   </p>
+     *             <p> embeddedActivity_addClient(YourOtherContainer, YourOtherClient);         </p>
      *             <p> embeddedActivity_buildClients();                                         </p>
      *
      * @param hostContainerViewById setContentView must be invoked with a XML LAYOUT container that
