@@ -2,23 +2,48 @@ package com.example.activitycreation;
 
 import android.os.Bundle;
 
-import cube.Cube;
-import embeddedActivity.EmbeddedActivityHost;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends EmbeddedActivityHost {
+//public class MainActivity extends FragmentActivity {
+//
+//    EmbeddedActivityHost host = new EmbeddedActivityHost(this);
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        host.log.logMethodName();
+//        setContentView(R.layout.fragment_container);
+//        host.log.log("savedInstanceState is " + savedInstanceState);
+//        if (savedInstanceState == null) {
+//            host.addAndBuildClient(R.id.fragment_container, new demo());
+//        }
+//    }
+//}
+
+/*
+    res/layouts/fragment_container.xml
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+ */
+
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        log.logMethodName();
-        setContentView(R.layout.fragment_container_quad_screen);
-        log.log("savedInstanceState is " + savedInstanceState);
+        setContentView(R.layout.fragment_container);
         if (savedInstanceState == null) {
-            embeddedActivity_addClient(R.id.fragment_containerA, new Cube());
-            embeddedActivity_addClient(R.id.fragment_containerB, new Cube());
-            embeddedActivity_addClient(R.id.fragment_containerC, new Cube());
-            embeddedActivity_addClient(R.id.fragment_containerD, new Cube());
-            embeddedActivity_buildClients();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.fragment_container, new demo());
+            fragmentTransaction.commitNow();
+            ((demo)fragmentManager.findFragmentById(R.id.fragment_container)).onCreate_(null);
         }
     }
 }

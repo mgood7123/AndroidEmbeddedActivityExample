@@ -19,7 +19,7 @@ public class EmbeddedActivityClient extends Fragment {
 
     // used for internal logging
 
-    private final LogUtils log =
+    public final LogUtils log =
             new LogUtils(
             "EmbeddedActivityClientFragment",
             "a bug has occurred, this should not happen"
@@ -47,10 +47,6 @@ public class EmbeddedActivityClient extends Fragment {
             @Nullable final Bundle savedInstanceState
     ) {
         super.onCreateView(inflater, container, savedInstanceState);
-        log.logMethodName();
-        // root should not be null here
-        log.log("root is " + root);
-        log.errorAndThrowIfNull(root, "error: root was null, this should never happen");
         return root;
     }
 

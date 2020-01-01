@@ -7,42 +7,42 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/fragment_containerA"
+        android:id="@+id/fragment_container_quad_screen_A"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_containerC"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_container_quad_screen_C"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_containerB"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_container_quad_screen_B"
         ></FrameLayout>
 
     <FrameLayout
-        android:id="@+id/fragment_containerB"
+        android:id="@+id/fragment_container_quad_screen_B"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_containerD"
-        app:layout_constraintStart_toEndOf="@+id/fragment_containerA"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_container_quad_screen_D"
+        app:layout_constraintStart_toEndOf="@+id/fragment_container_quad_screen_A"
         app:layout_constraintEnd_toEndOf="parent"
         ></FrameLayout>
 
     <FrameLayout
-        android:id="@+id/fragment_containerC"
+        android:id="@+id/fragment_container_quad_screen_C"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_containerA"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_container_quad_screen_A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_containerD"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_container_quad_screen_D"
         ></FrameLayout>
 
     <FrameLayout
-        android:id="@+id/fragment_containerD"
+        android:id="@+id/fragment_container_quad_screen_D"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_containerB"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_container_quad_screen_B"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fragment_containerC"
+        app:layout_constraintStart_toEndOf="@+id/fragment_container_quad_screen_C"
         app:layout_constraintEnd_toEndOf="parent"
         ></FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
