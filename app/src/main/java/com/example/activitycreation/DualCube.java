@@ -10,6 +10,10 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import cube.Cube;
 
 //public class DualCube extends EmbeddedActivityClient {
 //
@@ -56,11 +60,11 @@ public class DualCube extends Fragment {
         super.onCreate(savedInstanceState);
         root.addView(getLayoutInflater().inflate(R.layout.ss, null, false), 0);
         if (savedInstanceState == null) {
-            //            FragmentManager fragmentManager = getChildFragmentManager();
-            //            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //            fragmentTransaction.add(R.id.ssa, new Cube());
-            //            fragmentTransaction.add(R.id.ssb, new Cube());
-            //            fragmentTransaction.commitNow();
+            FragmentManager fragmentManager = getChildFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.ssa, new Cube());
+            fragmentTransaction.add(R.id.ssb, new Cube());
+            fragmentTransaction.commitNow();
         }
     }
 }

@@ -97,15 +97,21 @@ public class demo extends Fragment {
 
     public void onCreate_(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        root.addView(getLayoutInflater().inflate(R.layout.ss, null, false), 0);
+        root.addView(getLayoutInflater().inflate(R.layout.fragment_container_quad_screen, null, false), 0);
         if (savedInstanceState == null) {
-            FragmentManager fragmentManager = getChildFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.ssa, new DualCube());
-            fragmentTransaction.add(R.id.ssb, new DualCube());
-            fragmentTransaction.commitNow();
-            ((DualCube)fragmentManager.findFragmentById(R.id.ssa)).onCreate_(null);
-            ((DualCube)fragmentManager.findFragmentById(R.id.ssb)).onCreate_(null);
+
+            FragmentManager fragmentManager1 = getChildFragmentManager();
+            FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
+            fragmentTransaction1.add(R.id.fragment_container_quad_screen_D, new QuadCube());
+            fragmentTransaction1.add(R.id.fragment_container_quad_screen_B, new QuadCube());
+            fragmentTransaction1.add(R.id.fragment_container_quad_screen_C, new QuadCube());
+            fragmentTransaction1.add(R.id.fragment_container_quad_screen_A, new QuadCube());
+            fragmentTransaction1.commitNow();
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_A)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_B)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_C)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_D)).onCreate_(null);
+
         }
     }
 }
