@@ -102,16 +102,16 @@ public class demo extends Fragment {
 
             FragmentManager fragmentManager1 = getFragmentManager();
             FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            fragmentTransaction1.add(R.id.A, new QuadCube());
-            fragmentTransaction1.add(R.id.B, new QuadCube());
-            fragmentTransaction1.add(R.id.C, new QuadCube());
             fragmentTransaction1.add(R.id.D, new QuadCube());
+            fragmentTransaction1.add(R.id.C, new QuadCube());
+            fragmentTransaction1.add(R.id.B, new QuadCube());
+            fragmentTransaction1.add(R.id.A, new QuadCube());
             fragmentTransaction1.commitNow();
             // the order here does not affect the actual order displayed on screen
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.A)).onCreate_(null);
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.B)).onCreate_(null);
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.C)).onCreate_(null);
             ((QuadCube)fragmentManager1.findFragmentById(R.id.D)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.C)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.B)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.A)).onCreate_(null);
 
         }
     }
