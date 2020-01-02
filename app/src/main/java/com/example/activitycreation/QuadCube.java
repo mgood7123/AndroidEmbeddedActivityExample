@@ -64,6 +64,8 @@ public class QuadCube extends Fragment {
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // the order here does not affect the actual order displayed on screen
+            // since Cube does not spawn any Fragment's itself
             fragmentTransaction.add(R.id.fragment_container_quad_screen_A, new Cube());
             fragmentTransaction.add(R.id.fragment_container_quad_screen_B, new Cube());
             fragmentTransaction.add(R.id.fragment_container_quad_screen_C, new Cube());

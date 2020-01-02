@@ -103,10 +103,11 @@ public class demo extends Fragment {
             FragmentManager fragmentManager1 = getChildFragmentManager();
             FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
             fragmentTransaction1.add(R.id.fragment_container_quad_screen_D, new QuadCube());
-            fragmentTransaction1.add(R.id.fragment_container_quad_screen_B, new QuadCube());
             fragmentTransaction1.add(R.id.fragment_container_quad_screen_C, new QuadCube());
+            fragmentTransaction1.add(R.id.fragment_container_quad_screen_B, new QuadCube());
             fragmentTransaction1.add(R.id.fragment_container_quad_screen_A, new QuadCube());
             fragmentTransaction1.commitNow();
+            // the order here does not affect the actual order displayed on screen
             ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_A)).onCreate_(null);
             ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_B)).onCreate_(null);
             ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_C)).onCreate_(null);
