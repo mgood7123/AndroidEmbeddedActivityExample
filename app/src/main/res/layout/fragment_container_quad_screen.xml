@@ -1,48 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <FrameLayout
-        android:id="@+id/fragment_container_quad_screen_A"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_container_quad_screen_C"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_container_quad_screen_B"
-        ></FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_container_quad_screen_B"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_container_quad_screen_D"
-        app:layout_constraintStart_toEndOf="@+id/fragment_container_quad_screen_A"
-        app:layout_constraintEnd_toEndOf="parent"
-        ></FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_container_quad_screen_C"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_container_quad_screen_A"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_container_quad_screen_D"
-        ></FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_container_quad_screen_D"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_container_quad_screen_B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fragment_container_quad_screen_C"
-        app:layout_constraintEnd_toEndOf="parent"
-        ></FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+<FrameLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
+                <TextView android:text="A" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#6A0A6A" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#53D363"/>
+                <FrameLayout android:id="@+id/A" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#53D363"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
+                <TextView android:text="B" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#53D363" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#7D0D3D"/>
+                <FrameLayout android:id="@+id/B" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#7D0D3D"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
+                <TextView android:text="C" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#7D0D3D" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#A3A3A9"/>
+                <FrameLayout android:id="@+id/C" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#A3A3A9"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
+                <TextView android:text="D" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#53D363" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#6A0A6A"/>
+                <FrameLayout android:id="@+id/D" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#6A0A6A"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

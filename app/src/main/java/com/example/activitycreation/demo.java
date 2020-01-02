@@ -100,18 +100,18 @@ public class demo extends Fragment {
         root.addView(getLayoutInflater().inflate(R.layout.fragment_container_quad_screen, null, false), 0);
         if (savedInstanceState == null) {
 
-            FragmentManager fragmentManager1 = getChildFragmentManager();
+            FragmentManager fragmentManager1 = getFragmentManager();
             FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            fragmentTransaction1.add(R.id.fragment_container_quad_screen_D, new QuadCube());
-            fragmentTransaction1.add(R.id.fragment_container_quad_screen_C, new QuadCube());
-            fragmentTransaction1.add(R.id.fragment_container_quad_screen_B, new QuadCube());
-            fragmentTransaction1.add(R.id.fragment_container_quad_screen_A, new QuadCube());
+            fragmentTransaction1.add(R.id.A, new QuadCube());
+            fragmentTransaction1.add(R.id.B, new QuadCube());
+            fragmentTransaction1.add(R.id.C, new QuadCube());
+            fragmentTransaction1.add(R.id.D, new QuadCube());
             fragmentTransaction1.commitNow();
             // the order here does not affect the actual order displayed on screen
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_A)).onCreate_(null);
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_B)).onCreate_(null);
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_C)).onCreate_(null);
-            ((QuadCube)fragmentManager1.findFragmentById(R.id.fragment_container_quad_screen_D)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.A)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.B)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.C)).onCreate_(null);
+            ((QuadCube)fragmentManager1.findFragmentById(R.id.D)).onCreate_(null);
 
         }
     }

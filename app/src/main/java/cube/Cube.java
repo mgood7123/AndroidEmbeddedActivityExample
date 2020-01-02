@@ -1,12 +1,10 @@
 package cube;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import embeddedActivity.EmbeddedActivityClient;
@@ -35,12 +33,6 @@ public class Cube extends EmbeddedActivityClient {
         RelativeLayout rel = new RelativeLayout(context);
         setContentView(rel);
         rel.addView(n.surfaceView);
-        // set text
-        TextView text = new TextView(context);
-        text.setText("Hello World! Try clicking the screen");
-        text.setTextSize(60f);
-        text.setTextColor(Color.WHITE);
-        rel.addView(text);
         Log.i(n.TAG, "onCreate()");
         n.surfaceView.setOnClickListener(new MyListener());
     }
