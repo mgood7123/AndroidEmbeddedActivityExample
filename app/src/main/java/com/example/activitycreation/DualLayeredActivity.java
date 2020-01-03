@@ -40,11 +40,11 @@ public class DualLayeredActivity extends Fragment {
         if (savedInstanceState == null) {
             FragmentManager fragmentManager1 = getFragmentManager();
             FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            fragmentTransaction1.add(R.id.fragment_container_split_screen_A, new LayeredActivity());
-            fragmentTransaction1.add(R.id.fragment_container_split_screen_B, new LayeredActivity());
+            fragmentTransaction1.add(R.id.fragment_container_split_screen_A, new LayeredActivity(), "dla1");
+            fragmentTransaction1.add(R.id.fragment_container_split_screen_B, new LayeredActivity(), "dla2");
             fragmentTransaction1.commitNow();
-            ((LayeredActivity)fragmentManager1.findFragmentById(R.id.fragment_container_split_screen_A)).onCreate_(null, "activity layer 0-A");
-            ((LayeredActivity)fragmentManager1.findFragmentById(R.id.fragment_container_split_screen_B)).onCreate_(null, "activity layer 0-B");
+            ((LayeredActivity)fragmentManager1.findFragmentByTag("dla1")).onCreate_(null, "activity layer 0-A", "layered activity 1-A", "dla3");
+            ((LayeredActivity)fragmentManager1.findFragmentByTag("dla2")).onCreate_(null, "activity layer 0-B", "layered activity 1-B", "dla4");
         }
     }
 }

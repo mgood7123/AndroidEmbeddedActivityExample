@@ -2,6 +2,7 @@ package com.example.activitycreation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class LayeredActivity1 extends Fragment {
         root.addView(getLayoutInflater().inflate(R.layout.sample_activity, null, false), 0);
         if (savedInstanceState == null) {
             ((TextView)root.findViewById(R.id.activity_text)).setText(text);
+            Log.e("TAG", "getFragmentManager().findFragmentById(R.id.fragment_container) = " + getFragmentManager().findFragmentById(R.id.fragment_container));
 //            FragmentManager fragmentManager1 = getFragmentManager();
 //            FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
 //            fragmentTransaction1.add(R.id.activity, new QuadCube());

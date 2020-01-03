@@ -41,9 +41,9 @@ public class MainActivity extends FragmentActivity {
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.fragment_container, new DualLayeredActivity());
+            fragmentTransaction.add(R.id.fragment_container, new DualLayeredActivity(), "dla");
             fragmentTransaction.commitNow();
-            ((DualLayeredActivity)fragmentManager.findFragmentById(R.id.fragment_container)).onCreate_(null);
+            ((DualLayeredActivity)fragmentManager.findFragmentByTag("dla")).onCreate_(null);
         }
     }
 }

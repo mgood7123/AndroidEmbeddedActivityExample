@@ -40,9 +40,9 @@ public class SingleLayeredActivity extends Fragment {
         if (savedInstanceState == null) {
             FragmentManager fragmentManager1 = getFragmentManager();
             FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            fragmentTransaction1.add(R.id.fragment_container, new LayeredActivity());
+            fragmentTransaction1.add(R.id.fragment_container, new LayeredActivity(), "dla1");
             fragmentTransaction1.commitNow();
-            ((LayeredActivity)fragmentManager1.findFragmentById(R.id.fragment_container)).onCreate_(null, "activity layer 0");
+            ((LayeredActivity)fragmentManager1.findFragmentByTag("dla1")).onCreate_(null, "activity layer 0", "layered activity 1", "dla2");
         }
     }
 }

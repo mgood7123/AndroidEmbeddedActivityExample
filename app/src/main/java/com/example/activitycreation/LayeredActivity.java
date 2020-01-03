@@ -35,16 +35,16 @@ public class LayeredActivity extends Fragment {
         return root;
     }
 
-    public void onCreate_(Bundle savedInstanceState, CharSequence text) {
+    public void onCreate_(Bundle savedInstanceState, CharSequence text, CharSequence text2, String tag) {
         super.onCreate(savedInstanceState);
         root.addView(getLayoutInflater().inflate(R.layout.sample_activity, null, false), 0);
         if (savedInstanceState == null) {
             ((TextView)root.findViewById(R.id.activity_text)).setText(text);
             FragmentManager fragmentManager1 = getFragmentManager();
             FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            fragmentTransaction1.add(R.id.activity, new LayeredActivity1());
+            fragmentTransaction1.add(R.id.activity, new LayeredActivity1(), tag);
             fragmentTransaction1.commitNow();
-            ((LayeredActivity1)fragmentManager1.findFragmentById(R.id.activity)).onCreate_(null, "activity layer 1");
+            ((LayeredActivity1)fragmentManager1.findFragmentByTag(tag)).onCreate_(null, text2);
         }
     }
 }
