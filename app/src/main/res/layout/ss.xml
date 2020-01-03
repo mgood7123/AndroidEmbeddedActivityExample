@@ -7,20 +7,20 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/fragment_container_split_screen_A"
+        android:id="@+id/ssa"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_container_split_screen_B"
+        app:layout_constraintEnd_toStartOf="@+id/ssb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 
     <FrameLayout
-        android:id="@+id/fragment_container_split_screen_B"
+        android:id="@+id/ssb"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fragment_container_split_screen_A"
+        app:layout_constraintStart_toEndOf="@+id/ssa"
         app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,6 +67,12 @@ public final class LogUtils {
         return object;
     }
 
+    @Nullable
+    @SuppressWarnings("ConstantOnRightSideOfComparison")
+    public final void errorAndThrow(String message) {
+        assertNotNull(message, null);
+    }
+
     public void logMethodName() {
         Log.d(TAG, Thread.currentThread().getStackTrace()[3].getMethodName() + "() called");
     }
