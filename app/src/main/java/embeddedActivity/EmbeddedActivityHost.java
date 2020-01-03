@@ -147,7 +147,6 @@ public class EmbeddedActivityHost {
     ) {
         log.logMethodName();
         cacheFragmentTransactionIfNotCached();
-        // should bindId be replaced with getId ?
         fragmentTransaction.add(getId(hostContainerViewById), client);
     }
 
@@ -227,5 +226,4 @@ public class EmbeddedActivityHost {
                     (HashMap<Integer, Integer>) savedInstanceState.getSerializable(key);
         }
     }
-
 }

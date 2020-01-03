@@ -13,7 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.HashMap;
+
 public class EmbeddedActivityClient extends Fragment {
+
+    // ------------ DATA ------------
+
+    public HashMap<String, Object> initializationExtras = new HashMap<>();
 
     // ------------ INTERNAL ------------
 

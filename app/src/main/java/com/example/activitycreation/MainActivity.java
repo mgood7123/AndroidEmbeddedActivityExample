@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import cube.Cube;
 import embeddedActivity.EmbeddedActivityHost;
 
 public class MainActivity extends FragmentActivity {
@@ -21,7 +20,10 @@ public class MainActivity extends FragmentActivity {
         host.bindId(R.id.fragment_container);
         host.log.log("savedInstanceState is " + savedInstanceState);
         if (savedInstanceState == null) {
-            host.addAndBuildClient(R.id.fragment_container, new Cube());
+            DualLayeredActivity x = new DualLayeredActivity();
+            x.initializationExtras.put("A", new demo());
+            x.initializationExtras.put("B", new DualLayeredActivity());
+            host.addAndBuildClient(R.id.fragment_container, x);
         }
     }
 
