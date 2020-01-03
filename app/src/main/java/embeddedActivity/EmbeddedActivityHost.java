@@ -99,14 +99,20 @@ public class EmbeddedActivityHost {
 
     public int bindId(final int hostContainerViewById) {
         log.logMethodName();
-        if (!hostContainerViewByIdMap.containsKey(hostContainerViewById))
+        if (!hostContainerViewByIdMap.containsKey(hostContainerViewById)) {
+            log.log("no mapped key " + hostContainerViewById + " exists");
             generateId(hostContainerViewById);
+        } else {
+            log.log("mapped key " + hostContainerViewById + " exists");
+        }
         int id = getId(hostContainerViewById);
-        if (fragmentActivity != null)
+        if (fragmentActivity != null) {
             fragmentActivity.findViewById(hostContainerViewById).setId(id);
-        else if (client != null)
+            log.log("binded " + hostContainerViewById + " to id " + id);
+        } else if (client != null) {
             client.root.findViewById(hostContainerViewById).setId(id);
-        else
+            log.log("binded " + hostContainerViewById + " to id " + id);
+        } else
             log.errorAndThrow(
                     "neither a fragment activity nor a embedded activity client was found"
             );
@@ -118,14 +124,25 @@ public class EmbeddedActivityHost {
         if (!hostContainerViewByIdMap.containsKey(hostContainerViewById)) {
             int id = View.generateViewId();
             hostContainerViewByIdMap.put(hostContainerViewById, id);
+            log.log("mapped id " + hostContainerViewById + " to id " + id);
             return id;
+        } else {
+            log.log("mapped key " + hostContainerViewById + " exists");
+            return getId(hostContainerViewById);
         }
-        return getId(hostContainerViewById);
     }
 
     Integer getId(final int hostContainerViewById) {
         log.logMethodName();
-        return hostContainerViewByIdMap.get(hostContainerViewById);
+        Integer id = hostContainerViewByIdMap.get(hostContainerViewById);
+        if (id == null) {
+            log.log("no value found for key " + hostContainerViewById);
+            id = hostContainerViewById;
+        } else {
+            log.log("value found for key " + hostContainerViewById);
+        }
+        log.log("returning id " + id);
+        return id;
     }
 
     /**

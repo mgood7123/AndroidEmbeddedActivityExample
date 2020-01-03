@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import cube.Cube;
 import embeddedActivity.EmbeddedActivityClient;
 import embeddedActivity.EmbeddedActivityHost;
 
@@ -22,10 +23,30 @@ public class demo extends EmbeddedActivityClient {
         host.bindId(R.id.fragment_container_quad_screen_D);
         log.log("savedInstanceState is " + savedInstanceState);
         if (savedInstanceState == null) {
-            host.addClient(R.id.fragment_container_quad_screen_A, new QuadCube());
-            host.addClient(R.id.fragment_container_quad_screen_B, new QuadCube());
-            host.addClient(R.id.fragment_container_quad_screen_C, new QuadCube());
-            host.addClient(R.id.fragment_container_quad_screen_D, new QuadCube());
+            QuadLayeredActivity x1 = new QuadLayeredActivity();
+            x1.initializationExtras.put("A", new Cube());
+            x1.initializationExtras.put("B", new Cube());
+            x1.initializationExtras.put("C", new Cube());
+            x1.initializationExtras.put("D", new Cube());
+            QuadLayeredActivity x2 = new QuadLayeredActivity();
+            x2.initializationExtras.put("A", new Cube());
+            x2.initializationExtras.put("B", new Cube());
+            x2.initializationExtras.put("C", new Cube());
+            x2.initializationExtras.put("D", new Cube());
+            QuadLayeredActivity x3 = new QuadLayeredActivity();
+            x3.initializationExtras.put("A", new Cube());
+            x3.initializationExtras.put("B", new Cube());
+            x3.initializationExtras.put("C", new Cube());
+            x3.initializationExtras.put("D", new Cube());
+            QuadLayeredActivity x4 = new QuadLayeredActivity();
+            x4.initializationExtras.put("A", new Cube());
+            x4.initializationExtras.put("B", new Cube());
+            x4.initializationExtras.put("C", new Cube());
+            x4.initializationExtras.put("D", new Cube());
+            host.addClient(R.id.fragment_container_quad_screen_A, x1);
+            host.addClient(R.id.fragment_container_quad_screen_B, x2);
+            host.addClient(R.id.fragment_container_quad_screen_C, x3);
+            host.addClient(R.id.fragment_container_quad_screen_D, x4);
             host.buildClients();
         }
     }
