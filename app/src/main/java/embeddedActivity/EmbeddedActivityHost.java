@@ -1,11 +1,16 @@
 package embeddedActivity;
 
+import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.util.HashMap;
 
 public class EmbeddedActivityHost {
     FragmentActivity fragmentActivity;
@@ -90,6 +95,39 @@ public class EmbeddedActivityHost {
         buildClients();
     }
 
+    public HashMap<Integer, Integer> hostContainerViewByIdMap = new HashMap<>();
+
+    public int bindId(final int hostContainerViewById) {
+        log.logMethodName();
+        if (!hostContainerViewByIdMap.containsKey(hostContainerViewById))
+            generateId(hostContainerViewById);
+        int id = getId(hostContainerViewById);
+        if (fragmentActivity != null)
+            fragmentActivity.findViewById(hostContainerViewById).setId(id);
+        else if (client != null)
+            client.root.findViewById(hostContainerViewById).setId(id);
+        else
+            log.errorAndThrow(
+                    "neither a fragment activity nor a embedded activity client was found"
+            );
+        return id;
+    }
+
+    Integer generateId(final int hostContainerViewById) {
+        log.logMethodName();
+        if (!hostContainerViewByIdMap.containsKey(hostContainerViewById)) {
+            int id = View.generateViewId();
+            hostContainerViewByIdMap.put(hostContainerViewById, id);
+            return id;
+        }
+        return getId(hostContainerViewById);
+    }
+
+    Integer getId(final int hostContainerViewById) {
+        log.logMethodName();
+        return hostContainerViewByIdMap.get(hostContainerViewById);
+    }
+
     /**
      * creates a new {@link #fragmentTransaction} if one is not already created and invokes
      * {@link
@@ -109,16 +147,8 @@ public class EmbeddedActivityHost {
     ) {
         log.logMethodName();
         cacheFragmentTransactionIfNotCached();
-        int newHostContainerViewById = View.generateViewId();
-        if (fragmentActivity != null)
-            fragmentActivity.findViewById(hostContainerViewById).setId(newHostContainerViewById);
-        else if (client != null)
-            this.client.root.findViewById(hostContainerViewById).setId(newHostContainerViewById);
-        else
-            log.errorAndThrow(
-                    "neither a fragment activity nor a embedded activity client was found"
-            );
-        fragmentTransaction.add(newHostContainerViewById, client);
+        // should bindId be replaced with getId ?
+        fragmentTransaction.add(getId(hostContainerViewById), client);
     }
 
     /**
@@ -182,4 +212,20 @@ public class EmbeddedActivityHost {
     public void invokeOverview() {
         // TODO
     }
+
+    String key = getClass().getCanonicalName() + "hostContainerViewByIdMap";
+
+    public void saveBundle(@NonNull final Bundle outState) {
+        log.logMethodName();
+        outState.putSerializable(key, hostContainerViewByIdMap);
+    }
+
+    public void restoreBundle(@Nullable final Bundle savedInstanceState) {
+        log.logMethodName();
+        if (savedInstanceState != null) {
+            hostContainerViewByIdMap =
+                    (HashMap<Integer, Integer>) savedInstanceState.getSerializable(key);
+        }
+    }
+
 }
