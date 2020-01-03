@@ -25,7 +25,7 @@ public class EmbeddedActivityClient extends Fragment {
             "a bug has occurred, this should not happen"
             );
 
-    FrameLayout root;
+    protected FrameLayout root;
 
     // since onCreate is called after onAttach and BEFORE onCreateView, the root view must exist
     // before onCreate is called since it is the entry point of an Activity

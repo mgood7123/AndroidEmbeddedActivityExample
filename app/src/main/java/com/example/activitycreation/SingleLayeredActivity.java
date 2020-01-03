@@ -10,8 +10,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class SingleLayeredActivity extends Fragment {
 
@@ -38,11 +36,11 @@ public class SingleLayeredActivity extends Fragment {
         super.onCreate(savedInstanceState);
         root.addView(getLayoutInflater().inflate(R.layout.fragment_container, null, false), 0);
         if (savedInstanceState == null) {
-            FragmentManager fragmentManager1 = getFragmentManager();
-            FragmentTransaction fragmentTransaction1 = fragmentManager1.beginTransaction();
-            fragmentTransaction1.add(R.id.fragment_container, new LayeredActivity(), "dla1");
-            fragmentTransaction1.commitNow();
-            ((LayeredActivity)fragmentManager1.findFragmentByTag("dla1")).onCreate_(null, "activity layer 0", "layered activity 1", "dla2");
+//            FragmentManager fragmentManager = getFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.add(R.id.fragment_container, new LayeredActivity(), "dla1");
+//            fragmentTransaction.commitNow();
+//            ((LayeredActivity)fragmentManager.findFragmentByTag("dla1")).onCreate_(null, "activity layer 0", "layered activity 1", "dla2");
         }
     }
 }

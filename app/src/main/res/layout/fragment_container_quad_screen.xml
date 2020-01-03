@@ -4,21 +4,21 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
             <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
                 <TextView android:text="A" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#6A0A6A" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#53D363"/>
-                <FrameLayout android:id="@+id/A" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#53D363"/>
+                <FrameLayout android:id="@+id/fragment_container_quad_screen_A" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#53D363"/>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
                 <TextView android:text="B" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#53D363" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#7D0D3D"/>
-                <FrameLayout android:id="@+id/B" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#7D0D3D"/>
+                <FrameLayout android:id="@+id/fragment_container_quad_screen_B" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#7D0D3D"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
             <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
                 <TextView android:text="C" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#7D0D3D" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#A3A3A9"/>
-                <FrameLayout android:id="@+id/C" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#A3A3A9"/>
+                <FrameLayout android:id="@+id/fragment_container_quad_screen_C" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#A3A3A9"/>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal">
                 <TextView android:text="D" android:textAppearance="@style/TextAppearance.AppCompat.Display2" android:textColor="#53D363" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="#6A0A6A"/>
-                <FrameLayout android:id="@+id/D" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#6A0A6A"/>
+                <FrameLayout android:id="@+id/fragment_container_quad_screen_D" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#6A0A6A"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

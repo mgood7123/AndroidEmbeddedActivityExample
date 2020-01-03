@@ -1,5 +1,7 @@
 package embeddedActivity;
 
+import android.view.View;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -107,7 +109,16 @@ public class EmbeddedActivityHost {
     ) {
         log.logMethodName();
         cacheFragmentTransactionIfNotCached();
-        fragmentTransaction.add(hostContainerViewById, client);
+        int newHostContainerViewById = View.generateViewId();
+        if (fragmentActivity != null)
+            fragmentActivity.findViewById(hostContainerViewById).setId(newHostContainerViewById);
+        else if (client != null)
+            this.client.root.findViewById(hostContainerViewById).setId(newHostContainerViewById);
+        else
+            log.errorAndThrow(
+                    "neither a fragment activity nor a embedded activity client was found"
+            );
+        fragmentTransaction.add(newHostContainerViewById, client);
     }
 
     /**
