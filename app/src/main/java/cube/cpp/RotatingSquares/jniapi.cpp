@@ -43,35 +43,35 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_cube_NativeView_nativeOnCreate(JNIEnv* jenv, jobject clazz, jlong instance) {
     LOG_INFO("Java_cube_NativeView_nativeOnCreate");
-    reinterpret_cast<Instance*>(instance)->renderer = new Renderer();
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer = new Renderer();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_cube_NativeView_nativeOnStart(JNIEnv* jenv, jobject clazz, jlong instance) {
     LOG_INFO("Java_cube_NativeView_nativeOnStart");
-    reinterpret_cast<Instance*>(instance)->renderer->start();
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->start();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_cube_NativeView_nativeOnResume(JNIEnv* jenv, jobject clazz, jlong instance) {
     LOG_INFO("Java_cube_NativeView_nativeOnResume");
-    reinterpret_cast<Instance*>(instance)->renderer->resume();
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->resume();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_cube_NativeView_nativeOnPause(JNIEnv* jenv, jobject clazz, jlong instance) {
     LOG_INFO("Java_cube_NativeView_nativeOnPause");
-    reinterpret_cast<Instance*>(instance)->renderer->pause();
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->pause();
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_cube_NativeView_nativeOnStop(JNIEnv* jenv, jobject clazz, jlong instance) {
     LOG_INFO("Java_cube_NativeView_nativeOnStop");
-    reinterpret_cast<Instance*>(instance)->renderer->stop();
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->stop();
 }
 
 extern "C"
@@ -106,4 +106,16 @@ Java_cube_NativeView_nativeSetSurface(JNIEnv* jenv, jobject clazz, jlong instanc
         mInstance->window = nullptr;
         mInstance->renderer->setWindow(mInstance->window);
     }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_cube_NativeView_nativeEnableRenderOneFrame(JNIEnv *env, jobject thiz, jlong instance) {
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->enableRenderOneFrame();
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_cube_NativeView_nativeDisableRenderOneFrame(JNIEnv *env, jobject thiz, jlong instance) {
+    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->disableRenderOneFrame();
 }

@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         View x = host.setupHostFragmentContainer(
                 R.layout.fragment_container,
+                R.id.fragment_container,
                 findViewById(R.id.SCREENSHOT),
                 findViewById(R.id.SCREENSHOT_BUTTON)
         );

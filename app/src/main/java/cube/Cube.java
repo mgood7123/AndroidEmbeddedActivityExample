@@ -28,7 +28,31 @@ public class Cube extends EmbeddedActivityClient {
         super.onCreate(savedInstanceState);
         log.logMethodName();
         if (context == null) context = getContext();
-        if (n == null) n = new NativeView(context);
+        if (n == null) n = new NativeView(context, this);
+        nativeEnableRenderOneFrame(() -> {
+            try {
+                synchronized (n.surfaceReadyNotification) {
+                    log.log("nativeEnableRenderOneFrame n.surfaceReadyNotification.wait() waiting");
+                    n.surfaceReadyNotification.wait();
+                    log.log("nativeEnableRenderOneFrame n.surfaceReadyNotification.wait() waited");
+                    n.nativeEnableRenderOneFrame(n.instance);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        nativeDisableRenderOneFrame(() -> {
+            try {
+                synchronized (n.surfaceReadyNotification) {
+                    log.log("nativeDisableRenderOneFrame n.surfaceReadyNotification.wait() waiting");
+                    n.surfaceReadyNotification.wait();
+                    log.log("nativeDisableRenderOneFrame n.surfaceReadyNotification.wait() waited");
+                    n.nativeDisableRenderOneFrame(n.instance);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         n.nativeOnCreate(n.instance);
         // build layout
         RelativeLayout rel = new RelativeLayout(context);

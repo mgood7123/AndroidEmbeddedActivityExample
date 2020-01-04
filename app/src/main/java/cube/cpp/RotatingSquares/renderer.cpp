@@ -110,7 +110,31 @@ void Renderer::setWindow(ANativeWindow *window) {
     }
 }
 
+void Renderer::enableRenderOneFrame() {
+    LOG_INFO("enableRenderOneFrame locking mutex");
+    pthread_mutex_lock(&_mutex);
+    LOG_INFO("enableRenderOneFrame locked mutex");
+    renderOneFrame = true;
+    renderOneFrameComplete.store(false);
+    LOG_INFO("enableRenderOneFrame unlocking mutex");
+    pthread_mutex_unlock(&_mutex);
+    LOG_INFO("enableRenderOneFrame unlocked mutex");
 
+    LOG_INFO("waiting for renderOneFrameComplete to become true before returning");
+    while (!renderOneFrameComplete.load());
+    LOG_INFO("returning");
+}
+
+void Renderer::disableRenderOneFrame() {
+    LOG_INFO("disableRenderOneFrame locking mutex");
+    pthread_mutex_lock(&_mutex);
+    LOG_INFO("disableRenderOneFrame locked mutex");
+    renderOneFrame = false;
+    renderOneFrameComplete.store(false);
+    LOG_INFO("disableRenderOneFrame unlocking mutex");
+    pthread_mutex_unlock(&_mutex);
+    LOG_INFO("disableRenderOneFrame unlocked mutex");
+}
 
 void Renderer::renderLoop() {
     LOG_INFO("renderLoop()");
@@ -134,11 +158,22 @@ void Renderer::renderLoop() {
                 break;
         }
         _msg = MSG_NONE;
-
-        // surface could be destroyed at any moment, avoid errors as soon as possible
-        if (_window != nullptr && renderingEnabled) drawFrame();
-        if (_window != nullptr && renderingEnabled) { GLIS_error_to_string_exec_EGL(eglSwapBuffers(_display, _surface)); }
-
+//        LOG_INFO("_window is %p", _window);
+        if (_window != nullptr && renderingEnabled) {
+            if (renderOneFrame && !renderOneFrameComplete) {
+                LOG_INFO("RENDERING ONE FRAME");
+                drawFrame();
+                GLIS_error_to_string_exec_EGL(eglSwapBuffers(_display, _surface));
+                glFinish();
+                LOG_INFO("RENDERED ONE FRAME");
+                renderOneFrameComplete.store(true);
+                LOG_INFO("true STORED IN renderOneFrameComplete");
+            } else {
+                LOG_INFO("RENDERING FRAME");
+                drawFrame();
+                GLIS_error_to_string_exec_EGL(eglSwapBuffers(_display, _surface));
+            }
+        }
         pthread_mutex_unlock(&_mutex);
     }
 

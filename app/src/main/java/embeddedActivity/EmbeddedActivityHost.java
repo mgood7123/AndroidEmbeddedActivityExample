@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -214,7 +215,11 @@ public class EmbeddedActivityHost {
         log.logMethodName();
         cacheSupportFragmentManagerIfNotCached();
         log.errorAndThrowIfNull(fragmentManager, "fragmentManager cannot be null");
-        return log.errorIfNull(fragmentManager.findFragmentById(hostContainerViewById));
+        return
+                log.errorIfNull(
+                        fragmentManager.findFragmentById(getId(hostContainerViewById)),
+                        "the target fragment could not be found"
+                );
     }
 
     /**
@@ -246,11 +251,13 @@ public class EmbeddedActivityHost {
     public EmbeddedActivityClient findClientById(final int hostContainerViewById) {
         log.logMethodName();
         Fragment fragmentById = findFragmentById(hostContainerViewById);
-        if (fragmentById instanceof EmbeddedActivityClient)
-            return (EmbeddedActivityClient) fragmentById;
-        log.errorNoStackTrace(
-                "error: hostContainerViewById must be class that extends EmbeddedActivityClient"
-        );
+        if (fragmentById != null) {
+            if (fragmentById instanceof EmbeddedActivityClient)
+                return (EmbeddedActivityClient) fragmentById;
+            log.errorNoStackTrace(
+                    "error: hostContainerViewById must be class that extends EmbeddedActivityClient"
+            );
+        }
         return null;
     }
 
@@ -268,12 +275,13 @@ public class EmbeddedActivityHost {
 
     public View setupHostFragmentContainer(
             @NonNull @LayoutRes int fragment_container_layout,
+            @NonNull @IdRes int fragContainer,
             ViewGroup targetView,
             Button overviewButton
     ) {
         View x = inflate(fragment_container_layout);
         overviewButton.setOnClickListener(
-                new overviewOnClickListener(x, targetView)
+                new overviewOnClickListener(x, fragContainer, targetView)
         );
         return x;
     }
@@ -282,12 +290,16 @@ public class EmbeddedActivityHost {
         boolean parent = false;
 
         View view;
+        @NonNull @IdRes int fragContainer;
         ViewGroup targetView;
         ViewGroup viewParent;
         int viewParentIndex;
 
-        public overviewOnClickListener(View view, ViewGroup targetView) {
+        public overviewOnClickListener(
+                View view, @NonNull @IdRes int fragContainer, ViewGroup targetView
+        ) {
             this.view = view;
+            this.fragContainer = fragContainer;
             this.targetView = targetView;
         }
 
@@ -300,6 +312,10 @@ public class EmbeddedActivityHost {
         public void onClick(View v) {
             log.logMethodName();
             parent = !parent;
+
+            EmbeddedActivityClient fragment = findClientById(fragContainer);
+            log.log("fragment is " + fragment);
+
             log.log("current targetView is " + targetView.getChildAt(0));
             if (targetView.getChildCount() != 0) {
                 log.log("removing");
@@ -318,12 +334,14 @@ public class EmbeddedActivityHost {
                         log.log("removed");
                     }
                     targetView.addView(view, 0);
+                    if (fragment != null) fragment.onOverviewCreate();
                 }
             } else {
                 // restore view
                 log.log("restoring view");
                 viewParent.addView(view, viewParentIndex);
                 log.log("restored view");
+                if (fragment != null) fragment.onOverviewDestroy();
             }
         }
     }

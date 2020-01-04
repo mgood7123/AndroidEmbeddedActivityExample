@@ -106,4 +106,37 @@ public class EmbeddedActivityClient extends Fragment {
         log.log("root is " + root);
         return root.findViewById(id);
     }
+
+    Runnable nativeEnableRenderOneFrame;
+    Runnable nativeDisableRenderOneFrame;
+
+    public void onOverviewCreate() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                nativeEnableRenderOneFrame.run();
+                onPause();
+            }
+        }.start();
+    }
+
+    public void onOverviewDestroy() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                onResume();
+                nativeDisableRenderOneFrame.run();
+            }
+        }.start();
+    }
+
+    public void nativeEnableRenderOneFrame(Runnable action) {
+        nativeEnableRenderOneFrame = action;
+    }
+
+    public void nativeDisableRenderOneFrame(Runnable action) {
+        nativeDisableRenderOneFrame = action;
+    }
 }

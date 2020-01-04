@@ -56,6 +56,19 @@ public final class LogUtils {
 
     @Nullable
     @SuppressWarnings("ConstantOnRightSideOfComparison")
+    public final <T> T errorIfNullNoStackTrace(@Nullable T object) {
+        return errorIfNullNoStackTrace(object, ERRORMESSAGE);
+    }
+
+    @Nullable
+    @SuppressWarnings("ConstantOnRightSideOfComparison")
+    public final <T> T errorIfNullNoStackTrace(@Nullable T object, String message) {
+        if (object == null) errorNoStackTrace(message);
+        return object;
+    }
+
+    @Nullable
+    @SuppressWarnings("ConstantOnRightSideOfComparison")
     public final <T> T errorAndThrowIfNull(@Nullable T object) {
         return errorAndThrowIfNull(object, ERRORMESSAGE);
     }

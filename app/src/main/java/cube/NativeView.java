@@ -19,16 +19,22 @@ public class NativeView {
     public final native void nativeOnDestroy(long instance);
     public final native void nativeDeleteInstance(long instance);
     public final native void nativeSetSurface(long instance, Surface surface);
+    public final native void nativeEnableRenderOneFrame(long instance);
+    public final native void nativeDisableRenderOneFrame(long instance);
 
 
-    View surfaceView = null;
-    SurfaceHolderCallback surfaceHolderCallback = null;
+    View surfaceView;
+    SurfaceHolderCallback surfaceHolderCallback;
+    Cube mCube;
 
-    public NativeView(Context context) {
+    final Object surfaceReadyNotification = new Object();
+
+    public NativeView(Context context, Cube cube) {
         System.loadLibrary("nativeegl");
         instance = nativeNewInstance();
         surfaceHolderCallback = new SurfaceHolderCallback(instance);
         surfaceView = new View(surfaceHolderCallback, context);
+        mCube = cube;
     }
 
     class View extends SurfaceView {
@@ -62,15 +68,23 @@ public class NativeView {
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
             nativeSetSurface(mInstance, holder.getSurface());
+            mCube.log.logMethodName();
         }
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
+            mCube.log.logMethodName();
+            synchronized (surfaceReadyNotification) {
+                mCube.log.log("surfaceCreated surfaceReadyNotification.notify() notifying");
+                surfaceReadyNotification.notify();
+                mCube.log.log("surfaceCreated surfaceReadyNotification.notify() notified");
+            }
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
             nativeSetSurface(mInstance, null);
+            mCube.log.logMethodName();
         }
     }
 }
