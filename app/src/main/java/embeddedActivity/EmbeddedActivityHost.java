@@ -1,8 +1,15 @@
 package embeddedActivity;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,6 +32,28 @@ public class EmbeddedActivityHost {
 
     public EmbeddedActivityHost(EmbeddedActivityClient client) {
         this.client = client;
+    }
+
+    LayoutInflater layoutInflater;
+
+    private void cacheLayoutInflaterIfNotCached() {
+        log.logMethodName();
+        if (layoutInflater == null) {
+            if (fragmentActivity != null)
+                layoutInflater = fragmentActivity.getLayoutInflater();
+            else if (client != null)
+                layoutInflater = client.getLayoutInflater();
+            else
+                log.errorAndThrow(
+                        "neither a fragment activity nor a embedded activity client was found"
+                );
+        }
+    }
+
+
+    public View inflate(@NonNull @LayoutRes int layoutResID) {
+        cacheLayoutInflaterIfNotCached();
+        return layoutInflater.inflate(layoutResID, null, false);
     }
 
     private void cacheSupportFragmentManagerIfNotCached() {
@@ -223,6 +252,114 @@ public class EmbeddedActivityHost {
                 "error: hostContainerViewById must be class that extends EmbeddedActivityClient"
         );
         return null;
+    }
+
+    public SOCL getScreenshotOnClickListener(
+            @NonNull @LayoutRes int layoutResID, @Nullable ImageView viewToSaveTo
+    ) {
+        return new SOCL(layoutResID, viewToSaveTo);
+    }
+
+    public SOCL getScreenshotOnClickListener(
+            @Nullable Resources resources, @Nullable View view, @Nullable ImageView viewToSaveTo
+    ) {
+        return new SOCL(resources, view, viewToSaveTo);
+    }
+
+    public View setupHostFragmentContainer(
+            @NonNull @LayoutRes int fragment_container_layout,
+            ViewGroup targetView,
+            Button overviewButton
+    ) {
+        View x = inflate(fragment_container_layout);
+        overviewButton.setOnClickListener(
+                new overviewOnClickListener(x, targetView)
+        );
+        return x;
+    }
+
+    class overviewOnClickListener implements View.OnClickListener {
+        boolean parent = false;
+
+        View view;
+        ViewGroup targetView;
+        ViewGroup viewParent;
+        int viewParentIndex;
+
+        public overviewOnClickListener(View view, ViewGroup targetView) {
+            this.view = view;
+            this.targetView = targetView;
+        }
+
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        @Override
+        public void onClick(View v) {
+            log.logMethodName();
+            parent = !parent;
+            log.log("current targetView is " + targetView.getChildAt(0));
+            if (targetView.getChildCount() != 0) {
+                log.log("removing");
+                targetView.removeViewAt(0);
+                log.log("removed");
+            }
+            if (parent) {
+                log.log("new targetView is " + view);
+                if (view != null) {
+                    viewParent = (ViewGroup) view.getParent();
+                    if (viewParent != null) {
+                        log.log("view has a parent");
+                        log.log("removing");
+                        viewParentIndex = viewParent.indexOfChild(view);
+                        viewParent.removeViewAt(viewParentIndex);
+                        log.log("removed");
+                    }
+                    targetView.addView(view, 0);
+                }
+            } else {
+                // restore view
+                log.log("restoring view");
+                viewParent.addView(view, viewParentIndex);
+                log.log("restored view");
+            }
+        }
+    }
+
+    class SOCL implements View.OnClickListener {
+
+        View src;
+        ImageView dest;
+        Resources res;
+
+        @SuppressLint("ResourceType")
+        public SOCL(@NonNull @LayoutRes int layoutResID, @Nullable ImageView viewToSaveTo) {
+            if (fragmentActivity != null) {
+                src = fragmentActivity.findViewById(layoutResID);
+                res = fragmentActivity.getResources();
+            } else if (client != null) {
+                src = client.findViewById(layoutResID);
+                res = client.getResources();
+            } else
+                log.errorAndThrow(
+                        "neither a fragment activity nor a embedded activity client was found"
+                );
+            dest = viewToSaveTo;
+        }
+
+        public SOCL(
+                @Nullable Resources resources, @Nullable View view, @Nullable ImageView viewToSaveTo
+        ) {
+            src = view;
+            dest = viewToSaveTo;
+            res = resources;
+        }
+
+        @Override
+        public void onClick(View v) {
+        }
     }
 
     public void invokeOverview() {

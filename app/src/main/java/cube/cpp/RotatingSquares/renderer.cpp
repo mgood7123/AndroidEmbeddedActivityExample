@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+#include "GLIS_NANO.h"
 #include <cstdint>
 #include <unistd.h>
 #include <pthread.h>
@@ -27,41 +28,41 @@
 #define LOG_TAG "EglSample"
 
 static GLint vertices[][3] = {
-    { -0x10000, -0x10000, -0x10000 },
-    {  0x10000, -0x10000, -0x10000 },
-    {  0x10000,  0x10000, -0x10000 },
-    { -0x10000,  0x10000, -0x10000 },
-    { -0x10000, -0x10000,  0x10000 },
-    {  0x10000, -0x10000,  0x10000 },
-    {  0x10000,  0x10000,  0x10000 },
-    { -0x10000,  0x10000,  0x10000 }
+        { -0x10000, -0x10000, -0x10000 },
+        {  0x10000, -0x10000, -0x10000 },
+        {  0x10000,  0x10000, -0x10000 },
+        { -0x10000,  0x10000, -0x10000 },
+        { -0x10000, -0x10000,  0x10000 },
+        {  0x10000, -0x10000,  0x10000 },
+        {  0x10000,  0x10000,  0x10000 },
+        { -0x10000,  0x10000,  0x10000 }
 };
 
 static GLint colors[][4] = {
-    { 0x00000, 0x00000, 0x00000, 0x10000 },
-    { 0x10000, 0x00000, 0x00000, 0x10000 },
-    { 0x10000, 0x10000, 0x00000, 0x10000 },
-    { 0x00000, 0x10000, 0x00000, 0x10000 },
-    { 0x00000, 0x00000, 0x10000, 0x10000 },
-    { 0x10000, 0x00000, 0x10000, 0x10000 },
-    { 0x10000, 0x10000, 0x10000, 0x10000 },
-    { 0x00000, 0x10000, 0x10000, 0x10000 }
+        { 0x00000, 0x00000, 0x00000, 0x10000 },
+        { 0x10000, 0x00000, 0x00000, 0x10000 },
+        { 0x10000, 0x10000, 0x00000, 0x10000 },
+        { 0x00000, 0x10000, 0x00000, 0x10000 },
+        { 0x00000, 0x00000, 0x10000, 0x10000 },
+        { 0x10000, 0x00000, 0x10000, 0x10000 },
+        { 0x10000, 0x10000, 0x10000, 0x10000 },
+        { 0x00000, 0x10000, 0x10000, 0x10000 }
 };
 
 static GLubyte indices[] = {
-    0, 4, 5,    0, 5, 1,
-    1, 5, 6,    1, 6, 2,
-    2, 6, 7,    2, 7, 3,
-    3, 7, 4,    3, 4, 0,
-    4, 7, 6,    4, 6, 5,
-    3, 0, 1,    3, 1, 2
+        0, 4, 5,    0, 5, 1,
+        1, 5, 6,    1, 6, 2,
+        2, 6, 7,    2, 7, 3,
+        3, 7, 4,    3, 4, 0,
+        4, 7, 6,    4, 6, 5,
+        3, 0, 1,    3, 1, 2
 };
 
 
 Renderer::Renderer()
-    : _msg(MSG_NONE), _display(nullptr), _surface(nullptr), _context(nullptr), _angle(0) {
+        : _msg(MSG_NONE), _display(nullptr), _surface(nullptr), _context(nullptr), _angle(0) {
     LOG_INFO("Renderer instance created");
-    pthread_mutex_init(&_mutex, nullptr);    
+    pthread_mutex_init(&_mutex, nullptr);
 }
 
 Renderer::~Renderer() {
@@ -98,11 +99,15 @@ void Renderer::stop() {
 }
 
 void Renderer::setWindow(ANativeWindow *window) {
-    // notify render thread that window has changed
-    pthread_mutex_lock(&_mutex);
-    _msg = MSG_WINDOW_SET;
-    _window = window;
-    pthread_mutex_unlock(&_mutex);
+    if (window != nullptr) {
+        // notify render thread that window has changed
+        pthread_mutex_lock(&_mutex);
+        _msg = MSG_WINDOW_SET;
+        _window = window;
+        pthread_mutex_unlock(&_mutex);
+    } else {
+        _window = window;
+    }
 }
 
 
@@ -129,30 +134,27 @@ void Renderer::renderLoop() {
                 break;
         }
         _msg = MSG_NONE;
-        
-        if (renderingEnabled && _display) {
-            drawFrame();
-            if (!eglSwapBuffers(_display, _surface)) {
-                LOG_ERROR("eglSwapBuffers() returned error %d", eglGetError());
-            }
-        }
-        
+
+        // surface could be destroyed at any moment, avoid errors as soon as possible
+        if (_window != nullptr && renderingEnabled) drawFrame();
+        if (_window != nullptr && renderingEnabled) { GLIS_error_to_string_exec_EGL(eglSwapBuffers(_display, _surface)); }
+
         pthread_mutex_unlock(&_mutex);
     }
-    
+
     LOG_INFO("Render loop exits");
 }
 
 bool Renderer::initialize() {
     const EGLint attribs[] = {
-        EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-        EGL_BLUE_SIZE, 8,
-        EGL_GREEN_SIZE, 8,
-        EGL_RED_SIZE, 8,
-        EGL_NONE
+            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+            EGL_BLUE_SIZE, 8,
+            EGL_GREEN_SIZE, 8,
+            EGL_RED_SIZE, 8,
+            EGL_NONE
     };
     EGLDisplay display;
-    EGLConfig config;    
+    EGLConfig config;
     EGLint numConfigs;
     EGLint format;
     EGLSurface surface;
@@ -160,53 +162,66 @@ bool Renderer::initialize() {
     EGLint width;
     EGLint height;
     GLfloat ratio;
-    
-    LOG_INFO("Initializing context");
-    
-    if ((display = eglGetDisplay(EGL_DEFAULT_DISPLAY)) == EGL_NO_DISPLAY) {
-        LOG_ERROR("eglGetDisplay() returned error %d", eglGetError());
-        return false;
-    }
-    if (!eglInitialize(display, nullptr, nullptr)) {
-        LOG_ERROR("eglInitialize() returned error %d", eglGetError());
-        return false;
-    }
 
-    if (!eglChooseConfig(display, attribs, &config, 1, &numConfigs)) {
-        LOG_ERROR("eglChooseConfig() returned error %d", eglGetError());
+    LOG_INFO("Initializing context");
+
+    display = GLIS_error_to_string_exec_EGL(eglGetDisplay(EGL_DEFAULT_DISPLAY));
+    if (display == EGL_NO_DISPLAY) {
         destroy();
         return false;
     }
 
-    if (!eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format)) {
-        LOG_ERROR("eglGetConfigAttrib() returned error %d", eglGetError());
+    EGLBoolean r = GLIS_error_to_string_exec_EGL(eglInitialize(display, nullptr, nullptr));
+    if (r == EGL_FALSE) {
+        destroy();
+        return false;
+    }
+
+    display = GLIS_error_to_string_exec_EGL(eglGetDisplay(EGL_DEFAULT_DISPLAY));
+    if (display == EGL_NO_DISPLAY) {
+        destroy();
+        return false;
+    }
+
+    r = GLIS_error_to_string_exec_EGL(eglChooseConfig(display, attribs, &config, 1, &numConfigs));
+    if (r == EGL_FALSE) {
+        destroy();
+        return false;
+    }
+
+    r = GLIS_error_to_string_exec_EGL(eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format));
+    if (r == EGL_FALSE) {
         destroy();
         return false;
     }
 
     ANativeWindow_setBuffersGeometry(_window, 0, 0, format);
 
-    if (!(surface = eglCreateWindowSurface(display, config, _window, nullptr))) {
-        LOG_ERROR("eglCreateWindowSurface() returned error %d", eglGetError());
-        destroy();
-        return false;
-    }
-    
-    if (!(context = eglCreateContext(display, config, nullptr, nullptr))) {
-        LOG_ERROR("eglCreateContext() returned error %d", eglGetError());
-        destroy();
-        return false;
-    }
-    
-    if (!eglMakeCurrent(display, surface, surface, context)) {
-        LOG_ERROR("eglMakeCurrent() returned error %d", eglGetError());
+    surface = GLIS_error_to_string_exec_EGL(eglCreateWindowSurface(display, config, _window, nullptr));
+    if (surface == EGL_NO_SURFACE) {
         destroy();
         return false;
     }
 
-    if (!eglQuerySurface(display, surface, EGL_WIDTH, &width) ||
-        !eglQuerySurface(display, surface, EGL_HEIGHT, &height)) {
-        LOG_ERROR("eglQuerySurface() returned error %d", eglGetError());
+    context = GLIS_error_to_string_exec_EGL(eglCreateContext(display, config, nullptr, nullptr));
+    if (context == EGL_NO_CONTEXT) {
+        destroy();
+        return false;
+    }
+
+    r = GLIS_error_to_string_exec_EGL(eglMakeCurrent(display, surface, surface, context));
+    if (r == EGL_FALSE) {
+        destroy();
+        return false;
+    }
+
+    EGLBoolean r1 = GLIS_error_to_string_exec_EGL(eglQuerySurface(display, surface, EGL_WIDTH, &width));
+    if (r1 == EGL_FALSE) {
+        destroy();
+        return false;
+    }
+    EGLBoolean r2 = GLIS_error_to_string_exec_EGL(eglQuerySurface(display, surface, EGL_HEIGHT, &height));
+    if (r2 == EGL_FALSE) {
         destroy();
         return false;
     }
@@ -221,7 +236,7 @@ bool Renderer::initialize() {
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
-    
+
     glViewport(0, 0, width, height);
 
     ratio = (GLfloat) width / height;
@@ -239,7 +254,7 @@ void Renderer::destroy() {
     eglDestroyContext(_display, _context);
     eglDestroySurface(_display, _surface);
     eglTerminate(_display);
-    
+
     _display = EGL_NO_DISPLAY;
     _surface = EGL_NO_SURFACE;
     _context = EGL_NO_CONTEXT;
@@ -256,13 +271,13 @@ void Renderer::drawFrame() {
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-    
+
     glFrontFace(GL_CW);
     glVertexPointer(3, GL_FIXED, 0, vertices);
     glColorPointer(4, GL_FIXED, 0, colors);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices);
 
-    _angle += 1.2F;    
+    _angle += 1.2F;
 }
 
 void* Renderer::threadStartCallback(void *myself) {
@@ -271,4 +286,3 @@ void* Renderer::threadStartCallback(void *myself) {
     renderer->renderLoop();
     pthread_exit(nullptr);
 }
-

@@ -103,5 +103,7 @@ Java_cube_NativeView_nativeSetSurface(JNIEnv* jenv, jobject clazz, jlong instanc
     } else {
         LOG_INFO("Releasing window");
         ANativeWindow_release(mInstance->window);
+        mInstance->window = nullptr;
+        mInstance->renderer->setWindow(mInstance->window);
     }
 }

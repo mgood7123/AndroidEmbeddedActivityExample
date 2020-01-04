@@ -26,6 +26,7 @@ public class Cube extends EmbeddedActivityClient {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        log.logMethodName();
         if (context == null) context = getContext();
         if (n == null) n = new NativeView(context);
         n.nativeOnCreate(n.instance);
@@ -40,30 +41,35 @@ public class Cube extends EmbeddedActivityClient {
     @Override
     public void onStart() {
         super.onStart();
+        log.logMethodName();
         n.nativeOnStart(n.instance);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        log.logMethodName();
         n.nativeOnResume(n.instance);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        log.logMethodName();
         n.nativeOnPause(n.instance);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        log.logMethodName();
         n.nativeOnStop(n.instance);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        log.logMethodName();
         n.nativeOnDestroy(n.instance);
         n.nativeDeleteInstance(n.instance);
     }

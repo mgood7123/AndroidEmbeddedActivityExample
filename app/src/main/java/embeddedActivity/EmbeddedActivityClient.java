@@ -58,9 +58,26 @@ public class EmbeddedActivityClient extends Fragment {
 
     // ------------ ACTIVITY COMPATIBILITY ------------
 
+    LayoutInflater layoutInflater;
+
+    private void cacheLayoutInflaterIfNotCached() {
+        log.logMethodName();
+        if (layoutInflater == null)
+                layoutInflater = getLayoutInflater();
+        else
+            log.errorAndThrow(
+                    "a embedded activity client was found"
+            );
+    }
+
+    public View inflate(@NonNull @LayoutRes int layoutResID) {
+        cacheLayoutInflaterIfNotCached();
+        return layoutInflater.inflate(layoutResID, null, false);
+    }
+
     public void setContentView(@NonNull @LayoutRes int layoutResID) {
         log.logMethodName();
-        setContentView(getLayoutInflater().inflate(layoutResID, null, false));
+        setContentView(inflate(layoutResID));
     }
 
     public void setContentView(View newRoot) {
