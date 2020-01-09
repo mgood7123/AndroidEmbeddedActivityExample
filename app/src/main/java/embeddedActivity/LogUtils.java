@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import static org.junit.Assert.assertNotNull;
 
-public final class LogUtils {
+public class LogUtils {
     private String TAG = "";
     private String ERRORMESSAGE = "An error has occured";
 
@@ -88,5 +88,21 @@ public final class LogUtils {
 
     public void logMethodName() {
         Log.d(TAG, Thread.currentThread().getStackTrace()[3].getMethodName() + "() called");
+    }
+
+    public String getMethodName() {
+        return getMethodName(1);
+    }
+
+    public String getMethodName(int methodDepthOffset) {
+        return Thread.currentThread().getStackTrace()[3+methodDepthOffset].getMethodName();
+    }
+
+    public String getParentMethodName() {
+        return getParentMethodName(1);
+    }
+
+    public String getParentMethodName(int methodDepthOffset) {
+        return Thread.currentThread().getStackTrace()[4+methodDepthOffset].getMethodName();
     }
 }

@@ -1,10 +1,12 @@
 package com.example.activitycreation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import cube.Cube;
@@ -32,6 +34,12 @@ public class MainActivity extends FragmentActivity {
         if (savedInstanceState == null) {
             host.addAndBuildClient(R.id.fragment_container, new Cube());
         }
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, @Nullable final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        host.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

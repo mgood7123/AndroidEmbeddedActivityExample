@@ -1,7 +1,6 @@
 package embeddedActivity;
 
-import android.annotation.SuppressLint;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.activitycreation.utils.ScreenUtils;
+
 import java.util.HashMap;
 
 public class EmbeddedActivityHost {
@@ -26,6 +27,12 @@ public class EmbeddedActivityHost {
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
+    ScreenUtils s = new ScreenUtils();
+
+    public void onActivityResult(final int requestCode, final int resultCode, @Nullable final Intent data) {
+        s.onActivityResult(requestCode, resultCode, data);
+    }
 
     public EmbeddedActivityHost(FragmentActivity fragmentActivity) {
         this.fragmentActivity = fragmentActivity;
@@ -261,22 +268,10 @@ public class EmbeddedActivityHost {
         return null;
     }
 
-    public SOCL getScreenshotOnClickListener(
-            @NonNull @LayoutRes int layoutResID, @Nullable ImageView viewToSaveTo
-    ) {
-        return new SOCL(layoutResID, viewToSaveTo);
-    }
-
-    public SOCL getScreenshotOnClickListener(
-            @Nullable Resources resources, @Nullable View view, @Nullable ImageView viewToSaveTo
-    ) {
-        return new SOCL(resources, view, viewToSaveTo);
-    }
-
     public View setupHostFragmentContainer(
             @NonNull @LayoutRes int fragment_container_layout,
             @NonNull @IdRes int fragContainer,
-            ViewGroup targetView,
+            ImageView targetView,
             Button overviewButton
     ) {
         View x = inflate(fragment_container_layout);
@@ -291,12 +286,12 @@ public class EmbeddedActivityHost {
 
         View view;
         @NonNull @IdRes int fragContainer;
-        ViewGroup targetView;
+        ImageView targetView;
         ViewGroup viewParent;
         int viewParentIndex;
 
         public overviewOnClickListener(
-                View view, @NonNull @IdRes int fragContainer, ViewGroup targetView
+                View view, @NonNull @IdRes int fragContainer, ImageView targetView
         ) {
             this.view = view;
             this.fragContainer = fragContainer;
@@ -311,72 +306,25 @@ public class EmbeddedActivityHost {
         @Override
         public void onClick(View v) {
             log.logMethodName();
-            parent = !parent;
-
-            EmbeddedActivityClient fragment = findClientById(fragContainer);
-            log.log("fragment is " + fragment);
-
-            log.log("current targetView is " + targetView.getChildAt(0));
-            if (targetView.getChildCount() != 0) {
-                log.log("removing");
-                targetView.removeViewAt(0);
-                log.log("removed");
-            }
-            if (parent) {
-                log.log("new targetView is " + view);
-                if (view != null) {
-                    viewParent = (ViewGroup) view.getParent();
-                    if (viewParent != null) {
-                        log.log("view has a parent");
-                        log.log("removing");
-                        viewParentIndex = viewParent.indexOfChild(view);
-                        viewParent.removeViewAt(viewParentIndex);
-                        log.log("removed");
-                    }
-                    targetView.addView(view, 0);
-                    if (fragment != null) fragment.onOverviewCreate();
-                }
-            } else {
-                // restore view
-                log.log("restoring view");
-                viewParent.addView(view, viewParentIndex);
-                log.log("restored view");
-                if (fragment != null) fragment.onOverviewDestroy();
-            }
-        }
-    }
-
-    class SOCL implements View.OnClickListener {
-
-        View src;
-        ImageView dest;
-        Resources res;
-
-        @SuppressLint("ResourceType")
-        public SOCL(@NonNull @LayoutRes int layoutResID, @Nullable ImageView viewToSaveTo) {
-            if (fragmentActivity != null) {
-                src = fragmentActivity.findViewById(layoutResID);
-                res = fragmentActivity.getResources();
-            } else if (client != null) {
-                src = client.findViewById(layoutResID);
-                res = client.getResources();
-            } else
-                log.errorAndThrow(
-                        "neither a fragment activity nor a embedded activity client was found"
-                );
-            dest = viewToSaveTo;
-        }
-
-        public SOCL(
-                @Nullable Resources resources, @Nullable View view, @Nullable ImageView viewToSaveTo
-        ) {
-            src = view;
-            dest = viewToSaveTo;
-            res = resources;
-        }
-
-        @Override
-        public void onClick(View v) {
+            s.takeScreenShot(fragmentActivity, targetView);
+//            new Thread() {
+//                @Override
+//                public void run() {
+//                    super.run();
+//                    s.variables.log.errorNoStackTrace("waiting for bitmap");
+//                    s.waitForBitmap();
+//                    s.variables.log.errorNoStackTrace("waited");
+//                    s.variables.log.errorNoStackTrace("bitmap = " + s.variables.bitmap);
+//                    fragmentActivity.runOnUiThread(
+//                            new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    targetView.setImageBitmap(s.variables.bitmap);
+//                                }
+//                            }
+//                    );
+//                }
+//            }.start();
         }
     }
 

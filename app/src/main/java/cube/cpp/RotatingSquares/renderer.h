@@ -20,7 +20,6 @@
 #include <pthread.h>
 #include <EGL/egl.h> // requires ndk r5 or newer
 #include <GLES/gl.h>
-#include <atomic>
 
 class Renderer {
 
@@ -37,13 +36,6 @@ public:
     void pause();
     void stop();
     void setWindow(ANativeWindow* window);
-
-
-    void enableRenderOneFrame();
-    void enableRenderOneFrame_();
-    void disableRenderOneFrame();
-    bool renderOneFrame = false;
-    std::atomic<bool> renderOneFrameComplete {false};
 
 private:
 
@@ -76,7 +68,6 @@ private:
 
     // Helper method for starting the thread 
     static void* threadStartCallback(void *myself);
-    static void* threadStartCallbackRenderOneFrame(void *myself);
 };
 
 #endif // RENDERER_H

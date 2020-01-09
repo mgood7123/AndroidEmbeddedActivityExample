@@ -107,15 +107,3 @@ Java_cube_NativeView_nativeSetSurface(JNIEnv* jenv, jobject clazz, jlong instanc
         mInstance->renderer->setWindow(mInstance->window);
     }
 }
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_cube_NativeView_nativeEnableRenderOneFrame(JNIEnv *env, jobject thiz, jlong instance) {
-    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->enableRenderOneFrame();
-}
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_cube_NativeView_nativeDisableRenderOneFrame(JNIEnv *env, jobject thiz, jlong instance) {
-    if (instance != 0) reinterpret_cast<Instance*>(instance)->renderer->disableRenderOneFrame();
-}
