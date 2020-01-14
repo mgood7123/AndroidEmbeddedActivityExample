@@ -93,6 +93,7 @@ Java_cube_NativeView_nativeDeleteInstance(JNIEnv *env, jobject clazz, jlong inst
 extern "C"
 JNIEXPORT void JNICALL
 Java_cube_NativeView_nativeSetSurface(JNIEnv* jenv, jobject clazz, jlong instance, jobject surface) {
+    LOG_INFO("Java_cube_NativeView_nativeSetSurface");
     LOG_INFO("surface = %p", surface);
     Instance * mInstance = reinterpret_cast<Instance*>(instance);
     if (surface != nullptr) {

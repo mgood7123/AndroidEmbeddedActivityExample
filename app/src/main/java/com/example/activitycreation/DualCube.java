@@ -32,4 +32,13 @@ public class DualCube extends EmbeddedActivityClient {
         super.onSaveInstanceState(outState);
         host.saveBundle(outState);
     }
+
+    public void setVisibility(int visibility) {
+        ((Cube)host.findClientById(R.id.ssa)).setVisibility(visibility);
+        ((Cube)host.findClientById(R.id.ssb)).setVisibility(visibility);
+    }
+
+    public int getVisibility() {
+        return ((Cube)host.findClientById(R.id.ssa)).getVisibility();
+    }
 }

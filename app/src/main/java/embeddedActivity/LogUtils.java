@@ -2,6 +2,7 @@ package embeddedActivity;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import static org.junit.Assert.assertNotNull;
@@ -67,20 +68,19 @@ public class LogUtils {
         return object;
     }
 
-    @Nullable
+    @NonNull
     @SuppressWarnings("ConstantOnRightSideOfComparison")
     public final <T> T errorAndThrowIfNull(@Nullable T object) {
         return errorAndThrowIfNull(object, ERRORMESSAGE);
     }
 
-    @Nullable
+    @NonNull
     @SuppressWarnings("ConstantOnRightSideOfComparison")
     public final <T> T errorAndThrowIfNull(@Nullable T object, String message) {
         assertNotNull(message, object);
         return object;
     }
 
-    @Nullable
     @SuppressWarnings("ConstantOnRightSideOfComparison")
     public final void errorAndThrow(String message) {
         assertNotNull(message, null);

@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ScreenSlidePagerActivity" />
+
         <service
             android:name=".utils.DetectMediaProjectionPromptService"
             android:label="Activity Creation MEDIA DETECT Service"

@@ -13,6 +13,19 @@ public class Cube extends EmbeddedActivityClient {
     NativeView n = null;
     Context context = null;
 
+    public void setVisibility(int visibility) {
+        if (n != null) {
+            n.surfaceView.setVisibility(visibility);
+        }
+    }
+
+    public int getVisibility() {
+        if (n != null) {
+            return n.surfaceView.getVisibility();
+        }
+        return View.GONE;
+    }
+
     public class MyListener implements View.OnClickListener {
         @Override
         public void onClick (View v) {
