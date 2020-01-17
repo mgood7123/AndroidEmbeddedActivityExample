@@ -21,17 +21,18 @@
 
     <Button
         android:id="@+id/show_view_A"
-        android:text="Tap me to switch to view A"
+        android:text="Tap me to togge Visibility"
         android:textSize="36sp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/show_view_B"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewFlipper"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintVertical_bias="0.0" />
 
+<!--
     <Button
         android:id="@+id/show_view_B"
         android:text="Tap me to switch to view B"
@@ -44,4 +45,5 @@
         app:layout_constraintTop_toBottomOf="@id/viewFlipper"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintVertical_bias="0.0" />
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

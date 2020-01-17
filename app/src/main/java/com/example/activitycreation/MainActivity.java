@@ -15,7 +15,7 @@ public class MainActivity extends FragmentActivity {
 
     EmbeddedActivityHost host = new EmbeddedActivityHost(this);
     String keyA = "a";
-    String keyB = "b";
+//    String keyB = "b";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,40 +25,46 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.view_switcher);
         View A = host.generateContainer();
         host.bindId(A, keyA);
-        View B = host.generateContainer();
-        host.bindId(B, keyB);
+//        View B = host.generateContainer();
+//        host.bindId(B, keyB);
 
         FrameLayout frameLayout = findViewById(R.id.viewFlipper);
         frameLayout.addView(A);
-        frameLayout.addView(B);
+//        frameLayout.addView(B);
 
         Button show_view_A = findViewById(R.id.show_view_A);
-        Button show_view_B = findViewById(R.id.show_view_B);
+//        Button show_view_B = findViewById(R.id.show_view_B);
 
         show_view_A.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.VISIBLE);
-                ((DualCube)host.findClientByKey(keyB)).setVisibility(View.INVISIBLE);
+                SimpleColor a = ((SimpleColor)host.findClientByKey(keyA));
+                int targetVisibility;
+                int currentVisibility = a.getVisibility();
+                if (currentVisibility == View.VISIBLE)
+                    a.setVisibility(View.INVISIBLE);
+                if (currentVisibility == View.INVISIBLE)
+                    a.setVisibility(View.VISIBLE);
+//                ((DualCube)host.findClientByKey(keyB)).setVisibility(View.INVISIBLE);
             }
         });
 
-        show_view_B.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
-                ((DualCube)host.findClientByKey(keyB)).setVisibility(View.VISIBLE);
-            }
-        });
+//        show_view_B.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
+//                ((DualCube)host.findClientByKey(keyB)).setVisibility(View.VISIBLE);
+//            }
+//        });
 
         if (savedInstanceState == null) {
             host.addAndBuildClient(keyA, new SimpleColor());
-            host.addAndBuildClient(keyB, new DualCube());
+//            host.addAndBuildClient(keyB, new DualCube());
             ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
-            ((DualCube)host.findClientByKey(keyB)).setVisibility(View.INVISIBLE);
+//            ((DualCube)host.findClientByKey(keyB)).setVisibility(View.INVISIBLE);
         } else {
             ((SimpleColor)host.findClientByKey(keyA)).setVisibility(savedInstanceState.getInt(keyA));
-            ((DualCube)host.findClientByKey(keyA)).setVisibility(savedInstanceState.getInt(keyB));
+//            ((DualCube)host.findClientByKey(keyA)).setVisibility(savedInstanceState.getInt(keyB));
         }
     }
 
@@ -151,6 +157,6 @@ public class MainActivity extends FragmentActivity {
         super.onSaveInstanceState(outState);
         host.saveBundle(outState);
         outState.putInt(keyA, ((SimpleColor)host.findClientByKey(keyA)).getVisibility());
-        outState.putInt(keyB, ((DualCube)host.findClientByKey(keyB)).getVisibility());
+//        outState.putInt(keyB, ((DualCube)host.findClientByKey(keyB)).getVisibility());
     }
 }

@@ -5,8 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import static org.junit.Assert.assertNotNull;
-
 public class LogUtils {
     private String TAG = "";
     private String ERRORMESSAGE = "An error has occured";
@@ -19,6 +17,47 @@ public class LogUtils {
         TAG = tag;
         ERRORMESSAGE = errorMessage;
     }
+
+    /**
+     * Fails a test with the given message.
+     *
+     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
+     * okay)
+     * @see AssertionError
+     */
+    static public void fail(String message) {
+        if (message == null) {
+            throw new AssertionError();
+        }
+        throw new AssertionError(message);
+    }
+
+    /**
+     * Asserts that a condition is true. If it isn't it throws an
+     * {@link AssertionError} with the given message.
+     *
+     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
+     * okay)
+     * @param condition condition to be checked
+     */
+    static public void assertTrue(String message, boolean condition) {
+        if (!condition) {
+            fail(message);
+        }
+    }
+
+    /**
+     * Asserts that an object isn't null. If it is an {@link AssertionError} is
+     * thrown with the given message.
+     *
+     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
+     * okay)
+     * @param object Object to check or <code>null</code>
+     */
+    static public void assertNotNull(String message, Object object) {
+        assertTrue(message, object != null);
+    }
+
 
     public final void log(String message) {
         Log.d(TAG, message);
