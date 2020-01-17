@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import cube.Cube;
+import SimpleColor.SimpleColor;
 import embeddedActivity.EmbeddedActivityClient;
 import embeddedActivity.EmbeddedActivityHost;
 
@@ -21,8 +21,8 @@ public class DualCube extends EmbeddedActivityClient {
         host.bindId(R.id.ssb);
         log.log("savedInstanceState is " + savedInstanceState);
         if (savedInstanceState == null) {
-            host.addClient(R.id.ssa, new Cube());
-            host.addClient(R.id.ssb, new Cube());
+            host.addClient(R.id.ssa, new SimpleColor());
+            host.addClient(R.id.ssb, new SimpleColor());
             host.buildClients();
         }
     }
@@ -34,11 +34,11 @@ public class DualCube extends EmbeddedActivityClient {
     }
 
     public void setVisibility(int visibility) {
-        ((Cube)host.findClientById(R.id.ssa)).setVisibility(visibility);
-        ((Cube)host.findClientById(R.id.ssb)).setVisibility(visibility);
+        ((SimpleColor)host.findClientById(R.id.ssa)).setVisibility(visibility);
+        ((SimpleColor)host.findClientById(R.id.ssb)).setVisibility(visibility);
     }
 
     public int getVisibility() {
-        return ((Cube)host.findClientById(R.id.ssa)).getVisibility();
+        return ((SimpleColor)host.findClientById(R.id.ssa)).getVisibility();
     }
 }

@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import cube.Cube;
+import SimpleColor.SimpleColor;
 import embeddedActivity.EmbeddedActivityHost;
 
 public class MainActivity extends FragmentActivity {
@@ -38,7 +38,7 @@ public class MainActivity extends FragmentActivity {
         show_view_A.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Cube)host.findClientByKey(keyA)).setVisibility(View.VISIBLE);
+                ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.VISIBLE);
                 ((DualCube)host.findClientByKey(keyB)).setVisibility(View.INVISIBLE);
             }
         });
@@ -46,18 +46,18 @@ public class MainActivity extends FragmentActivity {
         show_view_B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Cube)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
+                ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
                 ((DualCube)host.findClientByKey(keyB)).setVisibility(View.VISIBLE);
             }
         });
 
         if (savedInstanceState == null) {
-            host.addAndBuildClient(keyA, new Cube());
+            host.addAndBuildClient(keyA, new SimpleColor());
             host.addAndBuildClient(keyB, new DualCube());
-            ((Cube)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
+            ((SimpleColor)host.findClientByKey(keyA)).setVisibility(View.INVISIBLE);
             ((DualCube)host.findClientByKey(keyB)).setVisibility(View.INVISIBLE);
         } else {
-            ((Cube)host.findClientByKey(keyA)).setVisibility(savedInstanceState.getInt(keyA));
+            ((SimpleColor)host.findClientByKey(keyA)).setVisibility(savedInstanceState.getInt(keyA));
             ((DualCube)host.findClientByKey(keyA)).setVisibility(savedInstanceState.getInt(keyB));
         }
     }
@@ -146,28 +146,11 @@ public class MainActivity extends FragmentActivity {
 //        frameLayout.addView(ll);
 //    }
 
-    void swapVisibility(View A, View B) {
-        // if A is already visible
-        if (A.getVisibility() == View.VISIBLE)
-            // make sure B is gone
-            if (B.getVisibility() != View.INVISIBLE)
-                B.setVisibility(View.INVISIBLE);
-
-        // if A is NOT visible
-        if (A.getVisibility() != View.VISIBLE) {
-            // make sure B is gone
-            if (B.getVisibility() != View.INVISIBLE)
-                B.setVisibility(View.INVISIBLE);
-            // make A visible
-            A.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         host.saveBundle(outState);
-        outState.putInt(keyA, ((Cube)host.findClientByKey(keyA)).getVisibility());
+        outState.putInt(keyA, ((SimpleColor)host.findClientByKey(keyA)).getVisibility());
         outState.putInt(keyB, ((DualCube)host.findClientByKey(keyB)).getVisibility());
     }
 }

@@ -1,4 +1,4 @@
-package cube;
+package SimpleColor;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -12,10 +12,6 @@ public class NativeView {
     public final long instance;
     public final native long nativeNewInstance();
     public final native void nativeOnCreate(long instance);
-    public final native void nativeOnStart(long instance);
-    public final native void nativeOnResume(long instance);
-    public final native void nativeOnPause(long instance);
-    public final native void nativeOnStop(long instance);
     public final native void nativeOnDestroy(long instance);
     public final native void nativeDeleteInstance(long instance);
     public final native void nativeSetSurface(long instance, Surface surface);
@@ -24,7 +20,7 @@ public class NativeView {
     SurfaceHolderCallback surfaceHolderCallback;
 
     public NativeView(Context context) {
-        System.loadLibrary("cube");
+        System.loadLibrary("SimpleColor");
         instance = nativeNewInstance();
         surfaceHolderCallback = new SurfaceHolderCallback(instance);
         surfaceView = new View(surfaceHolderCallback, context);
