@@ -10,18 +10,17 @@ import android.widget.Toast;
 import embeddedActivity.EmbeddedActivityClient;
 
 public class SimpleColor extends EmbeddedActivityClient {
-    NativeView n = null;
-    Context context = null;
+    NativeView n;
 
     public void setVisibility(int visibility) {
         if (n != null) {
-            n.surfaceView.setVisibility(visibility);
+            n.surfaceSV.setVisibility(visibility);
         }
     }
 
     public int getVisibility() {
         if (n != null) {
-            return n.surfaceView.getVisibility();
+            return n.surfaceSV.getVisibility();
         }
         return View.GONE;
     }
@@ -29,10 +28,11 @@ public class SimpleColor extends EmbeddedActivityClient {
     public class MyListener implements View.OnClickListener {
         @Override
         public void onClick (View v) {
-            Toast toast = Toast.makeText(context,
+            Toast toast = Toast.makeText(getContext(),
                     "This demo combines Java UI and native EGL + OpenGL renderer",
                     Toast.LENGTH_SHORT);
             toast.show();
+            toast = null;
         }
     }
 
@@ -40,22 +40,23 @@ public class SimpleColor extends EmbeddedActivityClient {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         log.logMethodName();
-        if (context == null) context = getContext();
-        if (n == null) n = new NativeView(context);
-        n.nativeOnCreate(n.instance);
+        Context context = getContext();
+        n = new NativeView();
+        n.onCreate(context);
         // build layout
         RelativeLayout rel = new RelativeLayout(context);
         setContentView(rel);
-        rel.addView(n.surfaceView);
+        rel.addView(n.surfaceSV);
+        rel = null;
         Log.i(n.TAG, "onCreate()");
-        n.surfaceView.setOnClickListener(new MyListener());
+        n.surfaceSV.setOnClickListener(new MyListener());
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         log.logMethodName();
-        n.nativeOnDestroy(n.instance);
-        n.nativeDeleteInstance(n.instance);
+        n.onDestroy();
+        n = null;
+        super.onDestroy();
     }
 }

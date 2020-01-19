@@ -9,40 +9,50 @@ import android.view.SurfaceView;
 public class NativeView {
     String TAG = "EglSample";
 
-    public final long instance;
+    public long instance;
     public final native long nativeNewInstance();
     public final native void nativeOnCreate(long instance);
     public final native void nativeOnDestroy(long instance);
     public final native void nativeDeleteInstance(long instance);
     public final native void nativeSetSurface(long instance, Surface surface);
 
-    View surfaceView;
+    SV surfaceSV;
     SurfaceHolderCallback surfaceHolderCallback;
 
-    public NativeView(Context context) {
+    public final void onCreate(Context context) {
         System.loadLibrary("SimpleColor");
         instance = nativeNewInstance();
         surfaceHolderCallback = new SurfaceHolderCallback(instance);
-        surfaceView = new View(surfaceHolderCallback, context);
+        surfaceSV = new SV(surfaceHolderCallback, context);
+        nativeOnCreate(instance);
     }
 
-    class View extends SurfaceView {
-        public View(SurfaceHolder.Callback callback, Context context) {
+    public final void onDestroy() {
+        nativeOnDestroy(instance);
+        nativeDeleteInstance(instance);
+        surfaceHolderCallback.mInstance = 0;
+        surfaceHolderCallback = null;
+        surfaceSV = null;
+        instance = 0;
+    }
+
+    class SV extends SurfaceView {
+        public SV(SurfaceHolder.Callback callback, Context context) {
             super(context);
             getHolder().addCallback(callback);
         }
 
-        public View(SurfaceHolder.Callback callback, Context context, AttributeSet attrs) {
+        public SV(SurfaceHolder.Callback callback, Context context, AttributeSet attrs) {
             super(context, attrs);
             getHolder().addCallback(callback);
         }
 
-        public View(SurfaceHolder.Callback callback, Context context, AttributeSet attrs, int defStyle) {
+        public SV(SurfaceHolder.Callback callback, Context context, AttributeSet attrs, int defStyle) {
             super(context, attrs, defStyle);
             getHolder().addCallback(callback);
         }
 
-        public View(SurfaceHolder.Callback callback, Context context, AttributeSet attrs, int defStyle, int defStyleRes) {
+        public SV(SurfaceHolder.Callback callback, Context context, AttributeSet attrs, int defStyle, int defStyleRes) {
             super(context, attrs, defStyle, defStyleRes);
             getHolder().addCallback(callback);
         }

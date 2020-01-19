@@ -31,8 +31,8 @@ public class EmbeddedActivityHost {
 
     ScreenUtils s = new ScreenUtils();
 
-    public void onActivityResult(final int requestCode, final int resultCode, @Nullable final Intent data) {
-        s.onActivityResult(requestCode, resultCode, data);
+    public EmbeddedActivityHost() {
+        // empty constructor
     }
 
     public EmbeddedActivityHost(FragmentActivity fragmentActivity) {
@@ -41,6 +41,18 @@ public class EmbeddedActivityHost {
 
     public EmbeddedActivityHost(EmbeddedActivityClient client) {
         this.client = client;
+    }
+
+    public void setFragmentActivity(FragmentActivity fragmentActivity) {
+        this.fragmentActivity = fragmentActivity;
+    }
+
+    public void setClient(EmbeddedActivityClient client) {
+        this.client = client;
+    }
+
+    public void onActivityResult(final int requestCode, final int resultCode, @Nullable final Intent data) {
+        s.onActivityResult(requestCode, resultCode, data);
     }
 
     LayoutInflater layoutInflater;
